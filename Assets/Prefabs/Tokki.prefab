@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4499483784461830055}
   - component: {fileID: 4499483784461830054}
+  - component: {fileID: 8405816005432537092}
   m_Layer: 5
   m_Name: Tokki
   m_TagString: Untagged
@@ -52,6 +53,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tokkiImage: {fileID: 4499483784898972964}
   username: {fileID: 4499483785144118435}
+--- !u!95 &8405816005432537092
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4499483784461830048}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b79ddf00bf248c4468040ef41b176a5b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4499483784898972966
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,7 +239,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.05
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

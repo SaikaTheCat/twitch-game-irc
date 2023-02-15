@@ -1,18 +1,23 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TwitchChatConnect.Client;
-using TwitchChatConnect.Config;
 using TwitchChatConnect.Data;
 using TwitchChatConnect.Manager;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	[SerializeField] private Tokki sagwa;
-	[SerializeField] private Tokki momoe;
+	[SerializeField] private Tokki tokki;
+	[SerializeField] private Transform tokkisContainer;
+
+	private List<string> existingUsers = new List<string>();
+	private List<Tokki> tempTokkiList = new List<Tokki>();
+
+	public bool hadStarted = false;
 	private void Start()
 	{
+		UIManager uIManager = FindObjectOfType<UIManager>();
+		InitializeUI(uIManager);
 		TwitchChatClient.instance.Init(() =>
 		{
 			Debug.Log("Connected!");
@@ -37,6 +42,19 @@ public class GameManager : MonoBehaviour
 			});
 	}
 
+	private void InitializeUI(UIManager uIManager)
+	{
+		if (uIManager != null)
+		{
+			uIManager.SetStartButtonAction(() =>
+			{
+				hadStarted = true;
+				uIManager.StartGame();
+			});
+		}
+	}
+
+
 	private void ShowReward(TwitchChatReward chatReward)
 	{
 		throw new NotImplementedException();
@@ -44,19 +62,42 @@ public class GameManager : MonoBehaviour
 
 	private void ShowCommand(TwitchChatCommand chatCommand)
 	{
-		throw new NotImplementedException();
+		if (chatCommand.Command == "!join" && !hadStarted)
+		{
+			Debug.Log("entra aca");
+			if (existingUsers.Contains(chatCommand.User.DisplayName))
+			{
+				//return if user is repeated
+				return;
+			}
+			if (chatCommand.User.IsBroadcaster)
+			{
+				return;
+			}
+			existingUsers.Add(chatCommand.User.DisplayName);
+			var bunny = Instantiate(tokki, tokkisContainer) as Tokki;
+			tempTokkiList.Add(bunny);
+			bunny.SetName(chatCommand.User.DisplayName);
+			bunny.SetSprite();
+		}
+
 	}
 
 	private void ShowMessage(TwitchChatMessage chatMessage)
 	{
-		if(chatMessage.User.DisplayName == "Sagwacito")
+		if (existingUsers.Contains(chatMessage.User.DisplayName))
+		{
+			//return if user is repeated
+			return;
+		}
+		/*if (chatMessage.User.DisplayName == "Sagwacito")
 		{
 			sagwa.gameObject.SetActive(true);
 		}
-		else if(chatMessage.User.DisplayName=="mrmoemoekyun")
+		else if (chatMessage.User.DisplayName == "mrmoemoekyun")
 		{
 			momoe.gameObject.SetActive(true);
-		}
+		}*/
 		/*string message =
 		   $"Message by {chatMessage.User.DisplayName} - " +
 		   $"Bits: {chatMessage.Bits} - " +
@@ -66,6 +107,6 @@ public class GameManager : MonoBehaviour
 		   $"Badge versions: {string.Join("/", chatMessage.User.Badges.Select(badge => badge.Version))} - " +
 		   $"Is highlighted: {chatMessage.IsHighlighted} - " +
 		   $"Message: {chatMessage.Message}";*/
-		TwitchChatClient.instance.SendWhisper(chatMessage.User.Username, "Thanks for your message!");
+		//TwitchChatClient.instance.SendWhisper(chatMessage.User.Username, "Thanks for your message!");
 	}
 }
