@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
 
 	private List<string> existingUsers = new List<string>();
 	private List<Tokki> tempTokkiList = new List<Tokki>();
-
+	private string winner;
+	private int round = 1;
 	public bool hadStarted = false;
 	private void Start()
 	{
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour
 			{
 				audioSource.PlayOneShot(uIManager.StartClickAudio);
 				hadStarted = true;
+				uIManager.SetRound(round);
 				uIManager.StartGame();
 			});
 			uIManager.SetYesButtonAction(() =>
@@ -71,6 +73,7 @@ public class GameManager : MonoBehaviour
 	{
 		AudioSource audioSource = FindObjectOfType<AudioSource>();
 		List<Tokki> tokkisToRemove = new List<Tokki>();
+		uIManager.SetTokkiKiller(true);
 		foreach (var tokki in tempTokkiList)
 		{
 			if (tokki.answer != isYes)
@@ -84,7 +87,38 @@ public class GameManager : MonoBehaviour
 		foreach (var tokki in tokkisToRemove)
 		{
 			tempTokkiList.Remove(tokki);
+			Destroy(tokki.gameObject);
 			existingUsers.Remove(tokki.username.text);
+		}
+		uIManager.SetTokkiKiller(false);
+		VerifyGameStatus(uIManager);
+	}
+
+	private void VerifyGameStatus(UIManager uIManager)
+	{
+		Debug.Log($"tokki list count:{tempTokkiList.Count}");
+		if (tempTokkiList.Count == 1)
+		{
+			foreach (var tokki in tempTokkiList)
+			{
+				tokki.Check(false);
+				winner = tokki.username.text;
+			}
+			//Win
+			uIManager.SetWinner(winner);
+
+		}
+		else if (tempTokkiList.Count == 0)
+		{
+			uIManager.SetNoSurvivors();
+		}
+		else
+		{
+			foreach (var tokki in tempTokkiList)
+			{
+				tokki.Check(false);
+			}
+			uIManager.SetRound(++round);
 		}
 	}
 
@@ -113,7 +147,7 @@ public class GameManager : MonoBehaviour
 			bunny.SetName(chatCommand.User.DisplayName);
 			bunny.SetSprite();
 		}
-		if(hadStarted && existingUsers.Contains(chatCommand.User.DisplayName))
+		if (hadStarted && existingUsers.Contains(chatCommand.User.DisplayName))
 		{
 			foreach (var tokki in tempTokkiList)
 			{
