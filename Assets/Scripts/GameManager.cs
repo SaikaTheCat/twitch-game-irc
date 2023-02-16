@@ -77,12 +77,12 @@ public class GameManager : MonoBehaviour
 			{
 				tokkisToRemove.Add(tokki);
 				audioSource.PlayOneShot(uIManager.PewAudio);
+				tokki.gameObject.SetActive(false);
 			}
 			yield return new WaitForSeconds(1f);
 		}
 		foreach (var tokki in tokkisToRemove)
 		{
-			tokki.gameObject.SetActive(false);
 			tempTokkiList.Remove(tokki);
 			existingUsers.Remove(tokki.username.text);
 		}
