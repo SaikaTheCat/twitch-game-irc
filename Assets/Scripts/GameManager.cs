@@ -44,10 +44,12 @@ public class GameManager : MonoBehaviour
 
 	private void InitializeUI(UIManager uIManager)
 	{
+		AudioSource audioSource = FindObjectOfType<AudioSource>();
 		if (uIManager != null)
 		{
 			uIManager.SetStartButtonAction(() =>
 			{
+				audioSource.PlayOneShot(uIManager.StartClickAudio);
 				hadStarted = true;
 				uIManager.StartGame();
 			});
@@ -79,6 +81,26 @@ public class GameManager : MonoBehaviour
 			tempTokkiList.Add(bunny);
 			bunny.SetName(chatCommand.User.DisplayName);
 			bunny.SetSprite();
+		}
+		if(hadStarted && existingUsers.Contains(chatCommand.User.DisplayName))
+		{
+			foreach (var tokki in tempTokkiList)
+			{
+				if (tokki.username.text.Equals(chatCommand.User.DisplayName))
+				{
+					switch (chatCommand.Command)
+					{
+						case "!si":
+							tokki.SetChoice(true);
+							tokki.Check(true);
+							break;
+						case "!no":
+							tokki.SetChoice(false);
+							tokki.Check(true);
+							break;
+					}
+				}
+			}
 		}
 
 	}

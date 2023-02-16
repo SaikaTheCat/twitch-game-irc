@@ -5,7 +5,9 @@ using UnityEngine.UI;
 public class Tokki : MonoBehaviour
 {
 	[SerializeField] private Image tokkiImage;
-	[SerializeField] private TextMeshProUGUI username;
+	[SerializeField] private Image check;
+	public TextMeshProUGUI username;
+	public bool answer;
 
 	public void SetSprite()
 	{
@@ -15,5 +17,13 @@ public class Tokki : MonoBehaviour
 	public void SetName(string username)
 	{
 		this.username.text = username;
+	}
+	public void SetChoice(bool answer)
+	{
+		this.answer = answer;
+	}
+	public void Check(bool hadAnswered)
+	{
+		check.gameObject.SetActive(hadAnswered);
 	}
 }
