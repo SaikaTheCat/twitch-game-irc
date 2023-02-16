@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
 		audioSource.Play();
 		gameCanvas.gameObject.SetActive(false);
 		winCanvas.gameObject.SetActive(true);
-		winnerText.text = $"THE WINNER IS:\n{winner}";
+		winnerText.text = $"EL GANADOR ES:\n{winner}";
 	}
 	public void QuitGame()
 	{
