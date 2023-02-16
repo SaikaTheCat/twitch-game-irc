@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TwitchChatConnect.Client;
 using TwitchChatConnect.Data;
@@ -53,9 +54,39 @@ public class GameManager : MonoBehaviour
 				hadStarted = true;
 				uIManager.StartGame();
 			});
+			uIManager.SetYesButtonAction(() =>
+			{
+				audioSource.PlayOneShot(uIManager.StartClickAudio);
+				StartCoroutine(DestroyTokkis(true, uIManager));
+			});
+			uIManager.SetNoButtonAction(() =>
+			{
+				audioSource.PlayOneShot(uIManager.StartClickAudio);
+				StartCoroutine(DestroyTokkis(false, uIManager));
+			});
 		}
 	}
 
+	IEnumerator DestroyTokkis(bool isYes, UIManager uIManager)
+	{
+		AudioSource audioSource = FindObjectOfType<AudioSource>();
+		List<Tokki> tokkisToRemove = new List<Tokki>();
+		foreach (var tokki in tempTokkiList)
+		{
+			if (tokki.answer != isYes)
+			{
+				tokkisToRemove.Add(tokki);
+				audioSource.PlayOneShot(uIManager.PewAudio);
+			}
+			yield return new WaitForSeconds(1f);
+		}
+		foreach (var tokki in tokkisToRemove)
+		{
+			tokki.gameObject.SetActive(false);
+			tempTokkiList.Remove(tokki);
+			existingUsers.Remove(tokki.username.text);
+		}
+	}
 
 	private void ShowReward(TwitchChatReward chatReward)
 	{

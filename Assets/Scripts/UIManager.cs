@@ -14,12 +14,22 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private GameObject gameInstruction;
 	[SerializeField] private AudioClip startClickAudio;
 	[SerializeField] private AudioClip quizBGAudio;
+	[SerializeField] private AudioClip pewAudio;
 
 	public AudioClip StartClickAudio { get => startClickAudio; }
+	public AudioClip PewAudio { get => pewAudio; }
 
 	public void SetStartButtonAction(UnityAction unityAction)
 	{
 		startButton.onClick.AddListener(unityAction);
+	}
+	public void SetYesButtonAction(UnityAction unityAction)
+	{
+		yesButton.onClick.AddListener(unityAction);
+	}
+	public void SetNoButtonAction(UnityAction unityAction)
+	{
+		noButton.onClick.AddListener(unityAction);
 	}
 	public void StartGame()
 	{

@@ -271,6 +271,7 @@ MonoBehaviour:
   gameInstruction: {fileID: 1071693580}
   startClickAudio: {fileID: 8300000, guid: 205d744ac56257240becc5fd2e748af1, type: 3}
   quizBGAudio: {fileID: 8300000, guid: 882eac39f86082c468e750c227425b37, type: 3}
+  pewAudio: {fileID: 8300000, guid: 355702b343d17ea44bd63b4837f00cef, type: 3}
 --- !u!1 &155727522
 GameObject:
   m_ObjectHideFlags: 0
